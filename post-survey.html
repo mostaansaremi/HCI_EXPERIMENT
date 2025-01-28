@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Experiment - Post-Survey</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Post-Experiment Survey</h1>
+  </header>
+
+  <main>
+    <form id="postSurveyForm">
+      <label for="satisfaction">How satisfied were you with this experiment?</label>
+      <select id="satisfaction" name="satisfaction" required>
+        <option value="">--Select--</option>
+        <option value="1">1 - Not at all</option>
+        <option value="2">2 - Slightly</option>
+        <option value="3">3 - Neutral</option>
+        <option value="4">4 - Somewhat</option>
+        <option value="5">5 - Very</option>
+      </select>
+
+      <label for="comments">Any additional comments?</label>
+      <textarea id="comments" name="comments" rows="4"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- Hidden thank you message, shown after form submission -->
+    <div id="thankYouMessage" style="display:none;">
+      <h2>Thank you for participating!</h2>
+      <p>Please close this page.</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Experiment</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
