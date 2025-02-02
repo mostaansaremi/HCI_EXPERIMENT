@@ -1,9 +1,11 @@
+/* Basic reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Body layout: ensure it fills the screen */
 body {
   font-family: Arial, sans-serif;
   min-height: 100vh;
@@ -11,58 +13,112 @@ body {
   flex-direction: column;
 }
 
-header {
-  background: #333;
-  color: #fff;
-  padding: 1rem;
-}
-header h1 {
-  margin-bottom: 0.5rem;
-}
-
+/* Center the main content vertically & horizontally */
 main {
   flex: 1;
-  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;      /* vertical center */
+  justify-content: center; /* horizontal center */
+  padding: 2rem;
 }
 
-label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-}
-input[type="text"],
-input[type="number"],
-input[type="email"],
-select,
-textarea {
+/* The main experiment section: limit max width for readability */
+#experimentSection {
+  max-width: 600px;
   width: 100%;
-  max-width: 400px;
-  padding: 0.5rem;
+  text-align: center; /* center text by default */
 }
 
-button,
-.button {
-  display: inline-block;
-  margin-top: 1rem;
+/* Scenario text: bigger margin below for spacing from diagnosis bubble */
+#scenarioText {
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+}
+
+/* Diagnosis container: speech bubble style */
+#diagnosisContainer {
+  position: relative;
+  margin: 0 auto 2rem;   /* center horizontally, 2rem bottom spacing */
+  max-width: 500px;
+  background-color: #f0f0f0;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  text-align: left; /* inside bubble, text left for "chat" feel */
+}
+
+/* The bubble arrow (triangle) */
+#diagnosisContainer::after {
+  content: "";
+  position: absolute;
+  left: 30px;        /* adjust arrow horizontal position */
+  bottom: -15px;     /* arrow sits just below the bubble */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 15px solid #f0f0f0; /* arrow color matches bubble background */
+}
+
+/* The diagnosis text inside the bubble */
+#diagnosisText {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Decision buttons: small spacing */
+#decisionButtons {
+  margin-bottom: 2rem;
+}
+
+/* Trust / Not Trust button styling (example) */
+#decisionButtons button {
+  margin: 0 0.5rem;
+  padding: 0.6rem 1.2rem;
   background-color: #007BFF;
   color: #fff;
-  padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-button:hover,
-.button:hover {
+#decisionButtons button:hover {
   background-color: #0056b3;
 }
 
-.button-group {
+/* Extra questions form */
+#extraQuestionsForm {
+  text-align: left; /* left align questions inside the form */
+  margin: 0 auto;
+  max-width: 500px;
+  display: none;  /* hidden until shown via JS */
+}
+
+#extraQuestionsForm p {
+  font-weight: bold;
   margin-top: 1rem;
 }
 
-h2#experimentText {
-  margin-bottom: 1rem;
+/* Radio input spacing */
+#extraQuestionsForm input[type="radio"] {
+  margin-right: 0.5rem;
 }
 
+/* "Next" button styling */
+#extraQuestionsForm button[type="submit"] {
+  display: block;
+  margin: 1.5rem auto 0;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#extraQuestionsForm button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+/* Footer styling */
 footer {
   background: #333;
   color: #fff;

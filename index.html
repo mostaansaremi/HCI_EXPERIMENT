@@ -4,26 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Experiment - Home</title>
+
+  <!-- Link to your main stylesheet (the one with flex-centering) -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Parse JS SDK & your main script (optional if you don't need logic on index) -->
+  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
+  <script src="script.js"></script>
 </head>
 <body>
   <header>
     <h1>Welcome to the Experiment</h1>
   </header>
 
+  <!-- Centered main content -->
   <main>
-    <section>
-      <h2>Home Page</h2>
-      <p>This experiment will guide you through the following pages:</p>
-      <ol>
-        <li>About</li>
-        <li>Pre-Survey</li>
-        <li>Main Experiment</li>
-        <li>Post-Survey</li>
-      </ol>
-      <p>
-        <a class="button" href="about.html">Go to About Page</a>
-      </p>
+    <section id="homeSection">
+      <!-- Single button that leads to About Page -->
+      <button onclick="location.href='about.html';">About</button>
     </section>
   </main>
 

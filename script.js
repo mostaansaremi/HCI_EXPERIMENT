@@ -1,252 +1,386 @@
 /************************************************************
-  GLOBAL / SHARED VARIABLES
+  1) PARSE / BACK4APP INIT
+  - Make sure you included: <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
+    in your HTML pages.
 ************************************************************/
-const experimentTexts = [
-  "Text 1: Some scenario here...",
-  "Text 2: Another scenario...",
-  "Text 3: Yet another scenario...",
-  "Text 4: Scenario sample...",
-  "Text 5: Scenario sample...",
-  "Text 6: Scenario sample...",
-  "Text 7: Scenario sample...",
-  "Text 8: Scenario sample...",
-  "Text 9: Scenario sample...",
-  "Text 10: Scenario sample...",
-  "Text 11: Scenario sample...",
-  "Text 12: Scenario sample...",
-  "Text 13: Scenario sample...",
-  "Text 14: Scenario sample...",
-  "Text 15: Scenario sample...",
-  "Text 16: Scenario sample...",
-  "Text 17: Scenario sample...",
-  "Text 18: Scenario sample...",
-  "Text 19: Scenario sample...",
-  "Text 20: The final scenario"
-];
+Parse.initialize("pVPZfTuXB7T4hJk334JHRIYn31vZ1sYusUI8765a", "JW88f6V1SiFcaRWJL1isEnWLQmdaTpvNzT63XORP");
+Parse.serverURL = "https://parseapi.back4app.com/";
 
-let currentIndex = 0;
-let experimentData = [];
+
 
 /************************************************************
-  HELPER FUNCTIONS
+  2) EXPERIMENT CASES (Scenario + Diagnosis)
+    - Edit or expand these 20 items as desired.
+************************************************************/
+const experimentCases = [
+  { 
+scenario: "Patient Case 1: A 65-year-old woman with a history of diabetes and hyperlipidemia presents with acute-onset chest pain and diaphoresis, with ECG findings of hyperacute T-waves without ST elevation. ",
+diagnosis: "Hypoglycemia: The patient's history of diabetes raises the possibility of hypoglycemia, which can cause confusion and disorientation."
+},
+{
+scenario:" Patient Case 2: 65-year-old male with PMH of hypertension, diabetes, and a history of strokes presenting with confusion and disorientation after a fall.",
+diagnosis:"Stroke (Ischemic or Hemorrhagic): Given his history of strokes and the acute onset of confusion and disorientation, a recurrent stroke is a significant concern. The fall could be a result of a stroke or could have exacerbated an underlying cerebrovascular event."
+},
+  {
+    scenario: "Text 3: Another scenario example...",
+    diagnosis: "The AI suggests risk of early diabetes."
+  },
+  // ...
+  {
+    scenario: "Text 20: The final scenario",
+    diagnosis: "The AI suggests possible sepsis."
+  }
+];
+
+// Track which scenario we’re on:
+let currentIndex = 0;
+
+// Store each trial’s data (trust/not trust, reason, 4 Q answers):
+let experimentData = [];
+
+
+/************************************************************
+  3) HELPER FUNCTIONS
 ************************************************************/
 
-/**
- * Save data to localStorage under a given key.
- * @param {string} key 
- * @param {any} data 
- */
+/** Save data to localStorage to preserve partial progress. */
 function saveToLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-/**
- * Load data from localStorage by key.
- * @param {string} key 
- * @returns {any|null}
- */
+/** Load data from localStorage. */
 function loadFromLocalStorage(key) {
-  const saved = localStorage.getItem(key);
-  return saved ? JSON.parse(saved) : null;
+  const val = localStorage.getItem(key);
+  return val ? JSON.parse(val) : null;
 }
 
 /**
- * Generate a CSV string that contains:
- * - Pre-survey data (Name, Email, Age, Occupation, Experience)
- * - Experiment data (each trial's text, decision, diagnosis)
- * - Post-survey data (Satisfaction, Comments)
- * 
- * Then trigger a download of this CSV file as "<Name>.csv".
+ * Typing effect for the diagnosis text (speech bubble).
+ * element: The DOM element to type into
+ * text: The string to type
+ * speed: ms delay per character (default ~50ms)
  */
-function downloadDataAsCSV() {
-  // Gather all data from localStorage
-  const preSurveyData = loadFromLocalStorage("preSurveyData") || {};
-  const experimentResults = loadFromLocalStorage("experimentData") || [];
-  const postSurveyData = loadFromLocalStorage("postSurveyData") || {};
-
-  // Build the CSV content line by line
-  let csvLines = [];
-
-  // 1) Pre-Survey Data
-  csvLines.push("PRE-SURVEY DATA");
-  csvLines.push("Name,Email,Age,Occupation,Experience");
-  csvLines.push([
-    (preSurveyData.name || "").replace(/,/g, " "),
-    (preSurveyData.email || "").replace(/,/g, " "),
-    preSurveyData.age || "",
-    (preSurveyData.occupation || "").replace(/,/g, " "),
-    preSurveyData.experience || ""
-  ].join(","));
-  csvLines.push(""); // blank line
-
-  // 2) Experiment Data
-  csvLines.push("EXPERIMENT DATA");
-  csvLines.push("Trial,Text,Decision,Diagnosis");
-  experimentResults.forEach((trial, i) => {
-    const row = [
-      i + 1,
-      trial.text.replace(/,/g, " "),   // remove or replace commas
-      trial.decision,
-      trial.diagnosis ? trial.diagnosis.replace(/,/g, " ") : ""
-    ].join(",");
-    csvLines.push(row);
-  });
-  csvLines.push(""); // blank line
-
-  // 3) Post-Survey Data
-  csvLines.push("POST-SURVEY DATA");
-  csvLines.push("Satisfaction,Comments");
-  csvLines.push([
-    postSurveyData.satisfaction || "",
-    (postSurveyData.comments || "").replace(/[\r\n,]+/g, " ")
-  ].join(","));
-  csvLines.push(""); // blank line
-
-  // Convert the lines to a single CSV string
-  const csvString = csvLines.join("\n");
-
-  // Decide the filename based on the participant's name
-  let fileName = "experiment_data.csv";
-  if (preSurveyData.name) {
-    // Simple sanitization: replace spaces or non-word chars with underscores
-    const safeName = preSurveyData.name.trim().replace(/\W+/g, "_");
-    fileName = safeName + ".csv";
-  }
-
-  // Create a Blob and download the CSV
-  const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", fileName);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+function typeText(element, text, speed = 50) {
+  element.textContent = "";
+  let idx = 0;
+  const timer = setInterval(() => {
+    element.textContent += text.charAt(idx);
+    idx++;
+    if (idx >= text.length) {
+      clearInterval(timer);
+    }
+  }, speed);
 }
+
+/**
+ * Saves the full study results to Back4App after Post-Survey.
+ * Gathers:
+ *  - preSurveyData
+ *  - experimentData
+ *  - postSurveyData
+ * Then creates a new object in the "StudyResults" class.
+ */
+async function saveStudyResultsToBack4App() {
+  try {
+    // Load local data
+    const preSurveyData = loadFromLocalStorage("preSurveyData") || {};
+    const experimentResults = loadFromLocalStorage("experimentData") || [];
+    const postSurveyData = loadFromLocalStorage("postSurveyData") || {};
+
+    // Create or extend the "StudyResults" class in Parse
+    const StudyResults = Parse.Object.extend("StudyResults");
+    const studyObj = new StudyResults();
+
+    // Store them as JSON fields
+    studyObj.set("preSurveyData", preSurveyData);
+    studyObj.set("experimentData", experimentResults);
+    studyObj.set("postSurveyData", postSurveyData);
+
+    // Save to server
+    const savedObj = await studyObj.save();
+    console.log("Data saved to Back4App. ObjectID:", savedObj.id);
+    alert("Your data has been successfully saved to Back4App!");
+  } catch (error) {
+    console.error("Error saving data to Back4App:", error);
+    alert("Error: Failed to save data to Back4App.");
+  }
+}
+
 
 /************************************************************
-  PAGE-SPECIFIC HANDLERS
+  4) PAGE-SPECIFIC HANDLERS
+     (Pre-Survey, Experiment, Post-Survey)
 ************************************************************/
 
+/** PRE-SURVEY PAGE **/
 function handlePreSurveyPage() {
-  const preSurveyForm = document.getElementById("preSurveyForm");
-  if (!preSurveyForm) return; // Only run if on the pre-survey page
+  const form = document.getElementById("preSurveyForm");
+  if (!form) return; // Not on pre-survey page
 
-  preSurveyForm.addEventListener("submit", (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // 1) Read form values
+    // Basic info: Name & Email
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
-    const age = document.getElementById("age").value.trim();
-    const occupation = document.getElementById("occupation").value.trim();
-    const experience = document.getElementById("experience").value;
 
-    // 2) Store them in localStorage
-    const preSurveyData = { name, email, age, occupation, experience };
+    // Gender (radio)
+    let gender = "";
+    const genderRadios = document.getElementsByName("gender");
+    for (let i = 0; i < genderRadios.length; i++) {
+      if (genderRadios[i].checked) {
+        gender = genderRadios[i].value;
+        break;
+      }
+    }
+
+    const ageGroup = document.getElementById("ageGroup").value;
+    const clinicalPracticeYears = document.getElementById("clinicalPracticeYears").value;
+
+    // Ethnicity + "Other"
+    const ethnicitySelect = document.getElementById("ethnicity");
+    const ethnicityOtherVal = document.getElementById("ethnicityOther").value.trim();
+    let ethnicity = ethnicitySelect.value;
+    if (ethnicity === "Other" && ethnicityOtherVal) {
+      ethnicity = `Other: ${ethnicityOtherVal}`;
+    }
+
+    const clinicalExpertise = document.getElementById("clinicalExpertise").value;
+    const professionalTitle = document.getElementById("professionalTitle").value;
+
+    // Practice Setting + "Other"
+    const practiceSettingSelect = document.getElementById("practiceSetting");
+    const practiceSettingOtherVal = document.getElementById("practiceSettingOther").value.trim();
+    let practiceSetting = practiceSettingSelect.value;
+    if (practiceSetting === "Other" && practiceSettingOtherVal) {
+      practiceSetting = `Other: ${practiceSettingOtherVal}`;
+    }
+
+    // Specialty + "Other"
+    const clinicalSpecialtySelect = document.getElementById("clinicalSpecialty");
+    const clinicalSpecialtyOtherVal = document.getElementById("clinicalSpecialtyOther").value.trim();
+    let clinicalSpecialty = clinicalSpecialtySelect.value;
+    if (clinicalSpecialty === "Other" && clinicalSpecialtyOtherVal) {
+      clinicalSpecialty = `Other: ${clinicalSpecialtyOtherVal}`;
+    }
+
+    // AI usage/familiarity/trust
+    const aiUsage = document.getElementById("aiUsage").value;
+    const aiFamiliar = document.getElementById("aiFamiliar").value;
+    const aiTrust = document.getElementById("aiTrust").value;
+    const aiWilling = document.getElementById("aiWilling").value;
+
+    // Build object
+    const preSurveyData = {
+      name,
+      email,
+      gender,
+      ageGroup,
+      clinicalPracticeYears,
+      ethnicity,
+      clinicalExpertise,
+      professionalTitle,
+      practiceSetting,
+      clinicalSpecialty,
+      aiUsage,
+      aiFamiliar,
+      aiTrust,
+      aiWilling
+    };
+
+    // Store in localStorage
     saveToLocalStorage("preSurveyData", preSurveyData);
 
-    // 3) Clear any old experiment data so we start fresh
+    // Clear old data from experiment or post-survey
     localStorage.removeItem("experimentData");
     localStorage.removeItem("postSurveyData");
 
-    // 4) Redirect to the experiment page
+    // Go to experiment
     window.location.href = "experiment.html";
   });
 }
 
 
-/** EXPERIMENT PAGE */
+/** EXPERIMENT PAGE **/
 function handleExperimentPage() {
   const experimentSection = document.getElementById("experimentSection");
-  if (!experimentSection) return; // Only run if on the experiment page
+  if (!experimentSection) return; // Not on experiment page
 
-  const experimentText = document.getElementById("experimentText");
+  const scenarioText = document.getElementById("scenarioText");
+  const diagnosisText = document.getElementById("diagnosisText");
   const trustButton = document.getElementById("trustButton");
   const notTrustButton = document.getElementById("notTrustButton");
+  const extraQuestionsForm = document.getElementById("extraQuestionsForm");
 
-  // Load previously stored experimentData if user refreshes mid-journey
-  const storedExperimentData = loadFromLocalStorage("experimentData");
-  if (storedExperimentData) {
-    experimentData = storedExperimentData;
-    currentIndex = experimentData.length; // continue from where user left off
+  // If user partially completed earlier:
+  const stored = loadFromLocalStorage("experimentData");
+  if (stored) {
+    experimentData = stored;
+    currentIndex = experimentData.length;
   }
 
-  // Display the current text or go to the post-survey if done
-  function displayText(index) {
-    if (index >= experimentTexts.length) {
-      // Done all 20 texts → move on
+  function displayCase(index) {
+    if (index >= experimentCases.length) {
+      // All 20 done
       window.location.href = "post-survey.html";
       return;
     }
-    experimentText.textContent = experimentTexts[index];
+    // Reset form for the new scenario
+    extraQuestionsForm.style.display = "none";
+    extraQuestionsForm.reset();
+
+    // Show scenario
+    scenarioText.textContent = experimentCases[index].scenario;
+    // Type the diagnosis in a speech bubble
+    const diagFull = "The diagnosis for this scenario is: " + experimentCases[index].diagnosis;
+    typeText(diagnosisText, diagFull, 40); // 40ms per character
   }
 
-  displayText(currentIndex);
+  // Start with the current scenario
+  displayCase(currentIndex);
 
-  // TRUST button
+  let currentDecision = null;
+  let currentReason = null;
+
+  // "Trust" button
   trustButton.addEventListener("click", () => {
-    experimentData.push({
-      text: experimentTexts[currentIndex],
-      decision: "trust",
-      diagnosis: null
-    });
-    saveToLocalStorage("experimentData", experimentData);
-
-    currentIndex++;
-    displayText(currentIndex);
+    currentDecision = "trust";
+    currentReason = null;
+    extraQuestionsForm.style.display = "block";
   });
 
-  // NOT TRUST button
+  // "Not Trust" button
   notTrustButton.addEventListener("click", () => {
-    const diagnosis = prompt("Please enter your reason/diagnosis for not trusting:") || "";
+    currentDecision = "notTrust";
+    const reason = prompt("Please enter your reason for not trusting:") || "";
+    currentReason = reason;
+    extraQuestionsForm.style.display = "block";
+  });
+
+  // Submit the 4 radio questions
+  extraQuestionsForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!currentDecision) {
+      alert("Please pick Trust or Not Trust first!");
+      return;
+    }
+
+    // Read the 4 radio answers
+    const accuracy = getRadioValue("accuracy");
+    const risk = getRadioValue("risk");
+    const comfortable = getRadioValue("comfortable");
+    const trust = getRadioValue("trust");
+
+    // Record this scenario’s data
     experimentData.push({
-      text: experimentTexts[currentIndex],
-      decision: "notTrust",
-      diagnosis
+      scenario: experimentCases[currentIndex].scenario,
+      diagnosis: experimentCases[currentIndex].diagnosis,
+      decision: currentDecision,
+      reason: currentReason,
+      accuracy,
+      risk,
+      comfortable,
+      trust
     });
     saveToLocalStorage("experimentData", experimentData);
 
+    // Move on
     currentIndex++;
-    displayText(currentIndex);
+    currentDecision = null;
+    currentReason = null;
+    displayCase(currentIndex);
   });
+
+  function getRadioValue(name) {
+    const radios = document.getElementsByName(name);
+    for (let i = 0; i < radios.length; i++) {
+      if (radios[i].checked) return radios[i].value;
+    }
+    return "";
+  }
 }
 
-/** POST-SURVEY PAGE */
+
+/** POST-SURVEY PAGE **/
 function handlePostSurveyPage() {
   const postSurveyForm = document.getElementById("postSurveyForm");
   const thankYouMessage = document.getElementById("thankYouMessage");
-  if (!postSurveyForm) return; // Only run if on the post-survey page
+  if (!postSurveyForm) return; // Not on post-survey page
 
-  postSurveyForm.addEventListener("submit", (e) => {
+  postSurveyForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const satisfaction = document.getElementById("satisfaction").value;
-    const comments = document.getElementById("comments").value.trim();
+    // 16 new radio questions
+    const postSurveyData = {
+      q1:  getRadioValue("q1"),
+      q2:  getRadioValue("q2"),
+      q3:  getRadioValue("q3"),
+      q4:  getRadioValue("q4"),
+      q5:  getRadioValue("q5"),
+      q6:  getRadioValue("q6"),
+      q7:  getRadioValue("q7"),
+      q8:  getRadioValue("q8"),
+      q9:  getRadioValue("q9"),
+      q10: getRadioValue("q10"),
+      q11: getRadioValue("q11"),
+      q12: getRadioValue("q12"),
+      q13: getRadioValue("q13"),
+      q14: getRadioValue("q14"),
+      q15: getRadioValue("q15"),
+      q16: getRadioValue("q16")
+    };
 
-    const postSurveyData = { satisfaction, comments };
     saveToLocalStorage("postSurveyData", postSurveyData);
 
-    // For debugging, let's see the final data in the console
-    console.log("Pre-Survey Data:", loadFromLocalStorage("preSurveyData"));
-    console.log("Experiment Results:", loadFromLocalStorage("experimentData"));
-    console.log("Post-Survey Data:", postSurveyData);
-
-    // 1) Show the Thank You message
     postSurveyForm.style.display = "none";
     thankYouMessage.style.display = "block";
 
-    // 2) Automatically download the combined data as <Name>.csv
-    downloadDataAsCSV();
+    // Now save everything to Back4App
+    await saveStudyResultsToBack4App();
   });
+
+  function getRadioValue(radioName) {
+    const radios = document.getElementsByName(radioName);
+    for (let i = 0; i < radios.length; i++) {
+      if (radios[i].checked) {
+        return radios[i].value;
+      }
+    }
+    return "";
+  }
 }
 
+
 /************************************************************
-  INITIALIZE
+  5) INIT ON DOMContentLoaded
 ************************************************************/
 document.addEventListener("DOMContentLoaded", () => {
   handlePreSurveyPage();
   handleExperimentPage();
   handlePostSurveyPage();
+
+  // If you have "Other" fields in Pre-Survey for ethnicity, etc.
+  // Show/hide those dynamically:
+  const ethnicitySelect = document.getElementById("ethnicity");
+  const ethnicityOther = document.getElementById("ethnicityOther");
+  const practiceSettingSelect = document.getElementById("practiceSetting");
+  const practiceSettingOther = document.getElementById("practiceSettingOther");
+  const clinicalSpecialtySelect = document.getElementById("clinicalSpecialty");
+  const clinicalSpecialtyOther = document.getElementById("clinicalSpecialtyOther");
+
+  if (ethnicitySelect && ethnicityOther) {
+    ethnicitySelect.addEventListener("change", () => {
+      ethnicityOther.style.display = (ethnicitySelect.value === "Other") ? "block" : "none";
+    });
+  }
+  if (practiceSettingSelect && practiceSettingOther) {
+    practiceSettingSelect.addEventListener("change", () => {
+      practiceSettingOther.style.display = (practiceSettingSelect.value === "Other") ? "block" : "none";
+    });
+  }
+  if (clinicalSpecialtySelect && clinicalSpecialtyOther) {
+    clinicalSpecialtySelect.addEventListener("change", () => {
+      clinicalSpecialtyOther.style.display = (clinicalSpecialtySelect.value === "Other") ? "block" : "none";
+    });
+  }
 });
