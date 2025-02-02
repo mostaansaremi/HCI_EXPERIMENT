@@ -4,92 +4,50 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Experiment - Main Task</title>
-  <!-- Replace with your actual stylesheet name/path -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Parse JS SDK (Back4App) -->
-  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
 </head>
 <body>
   <header>
-    <h1>Main Experiment</h1>
+    <h1>Experiment</h1>
   </header>
 
   <main>
     <section id="experimentSection">
-      <!-- The scenario text (top) -->
       <h2 id="scenarioText"></h2>
 
-      <!-- Diagnosis container with a speech-bubble style -->
+      <!-- Speech bubble container -->
       <div id="diagnosisContainer">
         <p id="diagnosisText"></p>
       </div>
 
-      <!-- Step 1: Trust / Not Trust buttons -->
+      <!-- Trust / Not Trust buttons -->
       <div id="decisionButtons">
         <button id="trustButton">Trust</button>
         <button id="notTrustButton">Not Trust</button>
       </div>
 
-      <!-- Step 2: 4 Radio Questions (hidden until user chooses trust/not trust) -->
-      <form id="extraQuestionsForm" style="display: none;">
-        <p><strong>1. I believe that the AI diagnosis is:</strong></p>
-        <label>
-          <input type="radio" name="accuracy" value="Not accurate at all" required />
-          Not accurate at all
-        </label><br/>
-        <label>
-          <input type="radio" name="accuracy" value="Somewhat accurate" required />
-          Somewhat accurate
-        </label><br/>
-        <label>
-          <input type="radio" name="accuracy" value="Completely accurate" required />
-          Completely accurate
-        </label><br/><br/>
+      <!-- 4 follow-up Qs (hidden by default) -->
+      <form id="extraQuestionsForm">
+        <p>1. I believe that the AI diagnosis is:</p>
+        <label><input type="radio" name="accuracy" value="Not accurate at all" required /> Not accurate at all</label>
+        <label><input type="radio" name="accuracy" value="Somewhat accurate" required /> Somewhat accurate</label>
+        <label><input type="radio" name="accuracy" value="Completely accurate" required /> Completely accurate</label>
 
-        <p><strong>2. This AI diagnosis can put your patient at risk.</strong></p>
-        <label>
-          <input type="radio" name="risk" value="Not at all" required />
-          Not at all
-        </label><br/>
-        <label>
-          <input type="radio" name="risk" value="Somewhat" required />
-          Somewhat
-        </label><br/>
-        <label>
-          <input type="radio" name="risk" value="Yes, absolutely" required />
-          Yes, absolutely
-        </label><br/><br/>
+        <p>2. This AI diagnosis can put your patient at risk.</p>
+        <label><input type="radio" name="risk" value="Not at all" required /> Not at all</label>
+        <label><input type="radio" name="risk" value="Somewhat" required /> Somewhat</label>
+        <label><input type="radio" name="risk" value="Yes, absolutely" required /> Yes, absolutely</label>
 
-        <p><strong>3. I would feel comfortable relying on this AI diagnosis.</strong></p>
-        <label>
-          <input type="radio" name="comfortable" value="No" required />
-          No
-        </label><br/>
-        <label>
-          <input type="radio" name="comfortable" value="Partially" required />
-          Partially
-        </label><br/>
-        <label>
-          <input type="radio" name="comfortable" value="Yes, completely" required />
-          Yes, completely
-        </label><br/><br/>
+        <p>3. I would feel comfortable relying on this AI diagnosis.</p>
+        <label><input type="radio" name="comfortable" value="No" required /> No</label>
+        <label><input type="radio" name="comfortable" value="Partially" required /> Partially</label>
+        <label><input type="radio" name="comfortable" value="Yes, completely" required /> Yes, completely</label>
 
-        <p><strong>4. I trust the AI diagnosis.</strong></p>
-        <label>
-          <input type="radio" name="trust" value="No" required />
-          No
-        </label><br/>
-        <label>
-          <input type="radio" name="trust" value="Partially" required />
-          Partially
-        </label><br/>
-        <label>
-          <input type="radio" name="trust" value="Yes, completely" required />
-          Yes, completely
-        </label><br/><br/>
+        <p>4. I trust the AI diagnosis.</p>
+        <label><input type="radio" name="trust" value="No" required /> No</label>
+        <label><input type="radio" name="trust" value="Partially" required /> Partially</label>
+        <label><input type="radio" name="trust" value="Yes, completely" required /> Yes, completely</label>
 
-        <!-- Next button -->
         <button type="submit">Next</button>
       </form>
     </section>
@@ -99,7 +57,7 @@
     <p>© 2025 Experiment</p>
   </footer>
 
-  <!-- Your main script with the logic for the entire site -->
+  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

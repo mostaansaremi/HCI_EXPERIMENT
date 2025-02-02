@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Experiment - About</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Parse JS SDK -->
-  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
 </head>
 <body>
   <header>
@@ -15,23 +13,22 @@
 
   <main>
     <section>
-      <h2>Information</h2>
+      <h2>About This Experiment</h2>
       <p>
-        This experiment is designed to gather data about participants’ trust decisions.
-        You will be asked to fill out a short pre-survey (including your name and email),
-        then read through 20 scenarios where you choose whether to trust the information
-        or not, then answer 4 questions about each scenario. Finally, you'll be asked
-        to complete a post-survey of 16 questions.
+        
+
+Thank you for your interest in our study, where we examine how clinicians interact with AI-driven medical recommendations. 
+</P>
+</P>
+In this experiment, we use an AI Clinical Decision Support (CDS) platform—powered by a Large Language Model (LLM)—that helps clinicians make better decisions by offering draft recommendations.
+</P>
+</P>
+In this experiment you expect to engage in answering a demographich questionnaire, analyzing some clinical scenarios and diagnosis provided by AI which you can trust or not trust, providing your feed back on the scenario if you did not trust the AI, give feed back on AI diagnosis, and a post-experiment survey. Your answer will save on the server autonomosly after you finish the experiment/ 
+</P>
+</P>
+our participation will help us understand how clinicians evaluate and trust AI-generated medical predictions. We appreciate your time and insights, as they will contribute to improving the design and reliability of AI Clinical Decision Support systems for healthcare professionals.
       </p>
-      <p>
-        When you finish, your data will be automatically saved to a Back4App (Parse) server.
-      </p>
-    </section>
-    <section>
-      <button
-        class="button"
-        onclick="location.href='pre-survey.html';"
-      >Next (Go to Pre-Survey)</button>
+      <button onclick="location.href='pre-survey.html';">Pre-Survey</button>
     </section>
   </main>
 
@@ -39,6 +36,7 @@
     <p>© 2025 Experiment</p>
   </footer>
 
+  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
