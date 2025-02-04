@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Experiment - Post-Survey</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Parse JS SDK -->
+  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
 </head>
 <body>
   <header>
-    <h1>Post-Survey</h1>
+    <h1>Post-Experiment Survey</h1>
   </header>
 
-<main>
+  <main>
     <form id="postSurveyForm">
       <p><strong>1. To what extent do you find it easy to read and understand the AI recommendations?</strong></p>
       <label><input type="radio" name="q1" value="Not at all understandable" required /> Not at all understandable</label><br/>
@@ -128,20 +130,17 @@
       <button type="submit">Submit</button>
     </form>
 
-
-      <!-- Hidden "Thank you" message after submission -->
-      <div id="thankYouMessage" style="display:none;">
-        <h2>Thank you for participating!</h2>
-        <p>Your responses have been saved on server. You can close this page.</p>
-      </div>
-    </section>
+    <!-- Hidden thank you message -->
+    <div id="thankYouMessage" style="display:none;">
+      <h2>Thank you for participating!</h2>
+      <p>Please close this page.</p>
+    </div>
   </main>
 
   <footer>
     <p>© 2025 Experiment</p>
   </footer>
 
-  <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
