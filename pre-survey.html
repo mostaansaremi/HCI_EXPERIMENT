@@ -2,16 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Experiment - Pre-Survey</title>
-  <!-- Link to your shared CSS (centering, button styles, speech bubble, etc.) -->
+  <title>Pre-Survey</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Pre-Survey</h1>
-  </header>
-
+  <header><h1>Pre-Survey</h1></header>
   <main>
     <section>
       <!-- This form’s ID must match the JS function handlePreSurveyPage() in script.js -->
@@ -21,14 +16,14 @@
         <p><strong>1. What is your email address?</strong></p>
         <input type="email" id="email" required />
 
-        <!-- 2. Gender (radio buttons) -->
+        <!-- 2. Gender (radio) -->
         <p><strong>2. What gender do you identify as?</strong></p>
         <label><input type="radio" name="gender" value="Male" required /> Male</label>
         <label><input type="radio" name="gender" value="Female" required /> Female</label>
         <label><input type="radio" name="gender" value="Non-binary" required /> Non-binary</label>
         <label><input type="radio" name="gender" value="Prefer not to say" required /> Prefer not to say</label>
 
-        <!-- 3. Age Group (select) -->
+        <!-- 3. Age Group -->
         <p><strong>3. What age group do you fall under?</strong></p>
         <select id="ageGroup" required>
           <option value="">--Select--</option>
@@ -40,7 +35,7 @@
           <option value="66+">66 years and older</option>
         </select>
 
-        <!-- 4. How many years in clinical practice? -->
+        <!-- 4. Years in clinical practice -->
         <p><strong>4. How many years have you been in clinical practice?</strong></p>
         <select id="clinicalPracticeYears" required>
           <option value="">--Select--</option>
@@ -51,7 +46,7 @@
           <option value="More than 30 years post training">More than 30 years post training</option>
         </select>
 
-        <!-- 5. Ethnicity (select) + hidden text field for “Other” -->
+        <!-- 5. Ethnicity -->
         <p><strong>5. What is your ethnicity?</strong></p>
         <select id="ethnicity" required>
           <option value="">--Select--</option>
@@ -169,7 +164,7 @@
           <option value="Strongly Disagree">Strongly Disagree</option>
         </select>
 
-        <!-- 13. I am willing to use an AI-based system (ID="aiWilling") -->
+        <!-- 13. Willing to use AI-based system -->
         <p><strong>13. I am willing to use an AI-based clinical decision support system in my clinical practice.</strong></p>
         <select id="aiWilling" required>
           <option value="">--Select--</option>
@@ -179,19 +174,15 @@
           <option value="Disagree">Disagree</option>
           <option value="Strongly Disagree">Strongly Disagree</option>
         </select>
-
-        <!-- Submit Button -->
         <br/><br/>
         <button type="submit">Continue to Experiment</button>
       </form>
     </section>
   </main>
-
   <footer>
     <p>© 2025 Experiment</p>
   </footer>
 
-  <!-- Parse JS SDK & your main script (with handlePreSurveyPage logic) -->
   <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
   <script src="script.js"></script>
 </body>

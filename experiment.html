@@ -2,33 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Experiment - Main Task</title>
+  <title>Experiment</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Experiment</h1>
-  </header>
-
+  <header><h1>Experiment</h1></header>
   <main>
     <section id="experimentSection">
+      <!-- Big case counter -->
       <h2 id="caseCounter"></h2>
-      <h2 id="scenarioText"></h2>
 
-      <!-- Speech bubble container -->
+      <h2 id="scenarioText"></h2>
       <div id="diagnosisContainer">
         <p id="diagnosisText"></p>
       </div>
 
-      <!-- Trust / Not Trust buttons -->
-      <div id="decisionButtons">
+      <div>
         <button id="trustButton">Trust</button>
         <button id="notTrustButton">Not Trust</button>
       </div>
 
-      <!-- 4 follow-up Qs (hidden by default) -->
-      <form id="extraQuestionsForm">
+      <!-- hidden form for 4 Qs -->
+      <form id="extraQuestionsForm" style="display:none;">
         <p>1. I believe that the AI diagnosis is:</p>
         <label><input type="radio" name="accuracy" value="Not accurate at all" required /> Not accurate at all</label>
         <label><input type="radio" name="accuracy" value="Somewhat accurate" required /> Somewhat accurate</label>
@@ -49,11 +44,11 @@
         <label><input type="radio" name="trust" value="Partially" required /> Partially</label>
         <label><input type="radio" name="trust" value="Yes, completely" required /> Yes, completely</label>
 
+        <br/><br/>
         <button type="submit">Next</button>
       </form>
     </section>
   </main>
-
   <footer>
     <p>© 2025 Experiment</p>
   </footer>

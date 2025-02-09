@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>IRB Consent Form</title>
-
-  <!-- Link to your shared stylesheet for formatting -->
+  <title>IRB Consent</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,34 +12,27 @@
   </header>
 
   <main>
-    <section>
-      <!-- Some IRB text. Replace with your actual IRB content. -->
+    <section id="irbConsentArea">
       <h2>Information</h2>
       <p>
-        This study has been approved by the Institutional Review Board (IRB). 
-        Please read the following consent information carefully before proceeding.
+        This study has been approved by the IRB. Please read the 
+        consent information carefully before continuing.
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-        Maecenas luctus nisi et odio ullamcorper, nec suscipit dui lacinia.
-        Curabitur malesuada, lorem eu cursus ullamcorper, ipsum enim luctus sapien, 
-        et volutpat velit arcu sit amet nunc.
-        <!-- Insert your actual IRB text here. -->
-      </p>
-      <p>
-        By participating in this study, you understand that your data may be used
-        for research purposes. You can withdraw at any time, etc.
-        <!-- More IRB details... -->
+        By continuing in this study, you acknowledge you have 
+        read and understood the consent form and agree to participate. 
+        You may withdraw at any time.
       </p>
 
-      <!-- A simple form with a checkbox and a "Continue" button -->
-      <form id="irbForm">
-        <label style="display: block; margin: 1rem 0;">
-          <input type="checkbox" id="consentCheck" />
-          I ACCEPT
-        </label>
-        <button type="submit">Continue to Pre-Survey</button>
-      </form>
+      <label style="display: block; margin: 1rem 0;">
+        <input type="checkbox" id="consentCheck" />
+        I ACCEPT
+      </label>
+
+      <!-- type="button" => no form submission or reload -->
+      <button type="button" id="irbContinueButton">
+        Continue to Pre-Survey
+      </button>
     </section>
   </main>
 
@@ -49,7 +40,6 @@
     <p>© 2025 Experiment</p>
   </footer>
 
-  <!-- Parse JS SDK + your main script (which includes handleIRBPage) -->
   <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
   <script src="script.js"></script>
 </body>
