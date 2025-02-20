@@ -130,11 +130,11 @@ async function sendDataToBack4App(preSurveyData, experimentData, postSurveyData,
     }
 
     const saved = await studyObj.save();
-    console.log("Saved to Back4App:", saved.id);
-    alert("Data saved to Back4App!");
+    console.log("Saved to Server:", saved.id);
+    alert("Data saved to Server! Thank you for Participating.");
   } catch (error) {
-    console.error("Error saving to Back4App:", error);
-    alert("Error: Could not save data to Back4App.");
+    console.error("Error saving to server:", error);
+    alert("Error: Could not save data to Server. Please contact Dr. Saremi @ m.saremi@nyu.edu to resolve the issue.");
   }
 }
 
@@ -169,7 +169,7 @@ function handlePreSurveyPage() {
     e.preventDefault();
 
     // Collect fields
-    const email = document.getElementById("email").value.trim();
+    const email = ""; //document.getElementById("email").value.trim();
 
     // Gender radio
     let gender = "";
