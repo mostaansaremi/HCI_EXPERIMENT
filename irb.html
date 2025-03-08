@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IRB Consent</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Inline style for scrollable box; adjust max-height as needed */
+    #irbConsentTextBox {
+      width: 90%;
+      max-width: 700px;
+      margin: 0 auto 1rem auto; /* center horizontally and add bottom margin */
+      overflow-y: auto;
+      max-height: 400px;
+      border: 1px solid #ccc;
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -13,21 +25,42 @@
 
   <main>
     <section id="irbConsentArea">
-      <h2>Information</h2>
-      <p>
-        This study has been approved by the IRB. Please read the 
-        consent information carefully before continuing.
-      </p>
-      </p>
-      </p>
-        Here will be the placeholder for IRB information page.
-      </p>  
-      <p>
-        By continuing in this study, you acknowledge you have 
-        read and understood the consent form and agree to participate. 
-        You may withdraw at any time.
-      </p>
-
+      <h2></h2>
+      
+      <div id="irbConsentTextBox">
+        <p>Dear Prospective Participant,</p>
+        
+        <p>
+          This letter is a request for you to participate in a research project designed to understand user trust in artificial intelligence. The project focuses on clinicians, industry workers, and students. This project is being conducted by Dr. Avishek Choudhury in Industrial and Management Systems Engineering at WVU and Dr. Mostaan Saremi in Tandon School of Engineering at NYU.
+        </p>
+        
+        <p>
+          If you decide to participate, you will be asked to take a survey designed based on your occupation. For clinicians, the survey will have patient profiles with AI generated differential diagnosis. You will be asked to evaluate the diagnosis and rate your trust level. For industry workers (data science field) and students, the survey will provide you with generic data science and statistics problems with AI generated solutions. You will be asked to evaluate the diagnosis and rate your trust level. Your participation in this project will take approximately 10 to 15 minutes. You must answer all the questions and make an assessment purely based on your knowledge. Please do not use the internet or other resources to evaluate the AI responses. You must be 18 years of age or older to participate. Please note that your answers will save after you finish the experiment.
+        </p>
+        
+        <p>
+          Your participation in this project will be kept as confidential as legally possible. All data will be reported in the aggregate. You will not be asked any questions that could lead back to your identity as a participant. Your participation is entirely voluntary. You may skip any question that you do not wish to answer, and you may stop participating at any time. The West Virginia University Institutional Review Board's approval of this project is on file with the WVU Office of Human Research Protections.
+        </p>
+        
+        <p>
+          If you have any questions about this research project, please feel free to contact us at 304-293-943 or by email at 
+          <a href="mailto:avishek.choudhury@mail.wvu.edu"><strong>avishek.choudhury@mail.wvu.edu</strong></a> and 
+          <a href="mailto:m.saremi@nyu.edu"><strong>m.saremi@nyu.edu</strong></a>. Additionally, you can contact the WVU Office of Human Research Protections at 304-293-7073.
+        </p>
+        
+        <p>
+          We hope that you will participate in this research project, as it could help us better understand how users trust AI. Thank you for your time and consideration.
+        </p>
+        
+        <p>
+          If you agree to participate, please check the Agree box and click “Continue to Pre-Survey” on your screen to proceed with the experiment.
+        </p>
+        
+        <p>Sincerely,</p>
+        
+        <p>Research Team</p>
+      </div>
+      
       <label style="display: block; margin: 1rem 0;">
         <input type="checkbox" id="consentCheck" />
         I ACCEPT
